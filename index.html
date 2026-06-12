@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e1a">
+<title>Coach English RPG｜國際教練英文養成系統</title>
+<style>
+:root{
+  --bg:#070b15;
+  --bg2:#0d1426;
+  --card:#121a30;
+  --card2:#16203a;
+  --line:#23304f;
+  --txt:#e8eefc;
+  --sub:#8aa0c8;
+  --blue:#3b82f6;
+  --blue2:#60a5fa;
+  --cyan:#22d3ee;
+  --gold:#fbbf24;
+  --gold2:#f59e0b;
+  --red:#ef4444;
+  --orange:#fb923c;
+  --green:#34d399;
+  --purple:#a78bfa;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%,#16213f 0%,var(--bg) 60%);
+  color:var(--txt);
+  font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:78px;
+  max-width:520px;margin:0 auto;
+  min-height:100%;
+  overflow-x:hidden;
+}
+.screen{display:none;padding:16px 14px 8px;animation:fade .25s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Header */
+.app-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.brand{font-weight:800;font-size:20px;letter-spacing:.5px;background:linear-gradient(90deg,var(--gold),var(--blue2),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{display:block;font-size:11px;font-weight:500;color:var(--sub);letter-spacing:0;-webkit-text-fill-color:var(--sub)}
+.lvl-chip{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1300;font-weight:800;font-size:12px;padding:6px 10px;border-radius:20px;box-shadow:0 4px 14px rgba(251,191,36,.35);white-space:nowrap}
+
+/* Cards */
+.card{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.card h2{font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h2 .ico{font-size:18px}
+.muted{color:var(--sub);font-size:13px;line-height:1.6}
+
+/* Hero profile */
+.hero{position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(59,130,246,.25),transparent 70%);pointer-events:none}
+.avatar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatar{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#1e3a8a,#0e7490);border:1px solid var(--line);flex-shrink:0}
+.coach-name{font-size:18px;font-weight:800}
+.coach-title{font-size:12px;color:var(--gold);font-weight:700;margin-top:2px}
+.exp-wrap{margin-top:4px}
+.exp-bar{height:12px;background:#0a1124;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.exp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:10px;width:0;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.exp-label{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:5px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.stat{background:#0c1428;border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.stat .n{font-size:18px;font-weight:800;color:var(--cyan)}
+.stat .l{font-size:10px;color:var(--sub);margin-top:2px}
+.stat.gold .n{color:var(--gold)}
+.stat.red .n{color:var(--orange)}
+.stat.green .n{color:var(--green)}
+
+.motiv{background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(59,130,246,.10));border:1px dashed var(--gold2);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6;color:#ffe9b0;font-weight:600}
+
+/* Buttons */
+.btn{display:block;width:100%;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--blue),#2563eb);box-shadow:0 6px 18px rgba(37,99,235,.35);transition:transform .1s,filter .2s}
+.btn:active{transform:scale(.97)}
+.btn.gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1300;box-shadow:0 6px 18px rgba(251,191,36,.35)}
+.btn.red{background:linear-gradient(135deg,#dc2626,var(--orange));box-shadow:0 6px 18px rgba(239,68,68,.35)}
+.btn.green{background:linear-gradient(135deg,#059669,var(--green));box-shadow:0 6px 18px rgba(52,211,153,.3)}
+.btn.ghost{background:#0c1428;border:1px solid var(--line);color:var(--txt);box-shadow:none}
+.btn.sm{padding:10px;font-size:13px;border-radius:12px}
+.btn-row{display:flex;gap:8px}
+.btn-row .btn{margin:0}
+
+/* Task list */
+.task{display:flex;align-items:center;gap:12px;background:#0c1428;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;transition:.2s}
+.task .tico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:#13203f;flex-shrink:0}
+.task .tinfo{flex:1;min-width:0}
+.task .tt{font-weight:700;font-size:14px}
+.task .ts{font-size:11px;color:var(--sub);margin-top:2px}
+.task .tx{font-size:12px;font-weight:800;color:var(--gold)}
+.task.done{opacity:.55;border-color:var(--green)}
+.task.done .tt{text-decoration:line-through}
+.task .check{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex-shrink:0;font-size:14px;color:transparent}
+.task.done .check{background:var(--green);border-color:var(--green);color:#062b1e}
+
+/* Pills / categories */
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{white-space:nowrap;background:#0c1428;border:1px solid var(--line);color:var(--sub);padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
+.pill.active{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border-color:transparent}
+
+/* Word / sentence cards */
+.wordcard{background:#0c1428;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.wordcard .top{display:flex;align-items:center;gap:12px}
+.wordcard .emoji{font-size:38px;width:54px;text-align:center;flex-shrink:0}
+.wordcard .en{font-size:22px;font-weight:800}
+.wordcard .zh{font-size:14px;color:var(--sub)}
+.row-line{display:flex;gap:8px;margin-top:8px;font-size:13px;line-height:1.5}
+.row-line b{color:var(--cyan);min-width:48px;flex-shrink:0;font-weight:700}
+.row-line.ex{background:#0a1322;border-radius:10px;padding:8px 10px;border:1px solid var(--line)}
+.tag{display:inline-block;font-size:10px;background:#13203f;color:var(--blue2);padding:3px 8px;border-radius:8px;margin-bottom:8px;font-weight:700}
+.mini-row{display:flex;gap:8px;margin-top:10px}
+.mini-row .btn{margin:0}
+.speak{background:#0c1428;border:1px solid var(--line);color:var(--cyan);border-radius:10px;width:44px;display:grid;place-items:center;font-size:18px;cursor:pointer;flex-shrink:0}
+
+/* Flashcard */
+.flash{perspective:1200px;height:320px;margin-bottom:14px}
+.flash-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+.flash.flip .flash-inner{transform:rotateY(180deg)}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:linear-gradient(160deg,var(--card),var(--card2))}
+.flash-back{transform:rotateY(180deg);background:linear-gradient(160deg,#13203f,#0c1428)}
+.flash-face .bigemoji{font-size:80px;margin-bottom:10px}
+.flash-face .fen{font-size:30px;font-weight:800}
+.flash-face .ftip{font-size:12px;color:var(--sub);margin-top:14px}
+.flash-back .fzh{font-size:26px;font-weight:800;color:var(--gold)}
+.flash-back .fho{font-size:16px;color:var(--cyan);margin-top:6px}
+.flash-back .fex{font-size:14px;color:var(--sub);margin-top:14px;line-height:1.5}
+.flash-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.flash-nav .idx{font-size:13px;color:var(--sub)}
+
+/* Dialogue */
+.bubble{border-radius:14px;padding:11px 13px;margin-bottom:8px;font-size:14px;line-height:1.5;max-width:88%}
+.bubble.coach{background:linear-gradient(135deg,#1e3a8a,#2563eb);margin-right:auto;border-bottom-left-radius:4px}
+.bubble.other{background:#13203f;margin-left:auto;border-bottom-right-radius:4px;border:1px solid var(--line)}
+.bubble .bzh{font-size:12px;color:rgba(255,255,255,.7);margin-top:4px}
+.keysent{background:rgba(251,191,36,.1);border:1px dashed var(--gold2);border-radius:12px;padding:10px;font-size:13px;margin:10px 0;color:#ffe9b0}
+
+/* Quiz */
+.q-prog{height:8px;background:#0a1124;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin-bottom:14px}
+.q-prog>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s}
+.q-text{font-size:18px;font-weight:800;margin-bottom:6px;line-height:1.4}
+.opt{display:block;width:100%;text-align:left;background:#0c1428;border:1px solid var(--line);color:var(--txt);border-radius:14px;padding:14px;font-size:15px;font-weight:600;margin-bottom:10px;cursor:pointer;transition:.15s}
+.opt:active{transform:scale(.98)}
+.opt.correct{background:rgba(52,211,153,.18);border-color:var(--green);color:#a7f3d0}
+.opt.wrong{background:rgba(239,68,68,.18);border-color:var(--red);color:#fecaca}
+.opt.dim{opacity:.5}
+
+/* Badges */
+.badge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.badge{background:#0c1428;border:1px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center;position:relative;transition:.2s}
+.badge .bi{font-size:34px;filter:grayscale(1) brightness(.6)}
+.badge .bn{font-size:12px;font-weight:800;margin-top:6px}
+.badge .bd{font-size:10px;color:var(--sub);margin-top:3px;line-height:1.4}
+.badge.unlocked{border-color:var(--gold);box-shadow:0 0 0 1px rgba(251,191,36,.3),0 8px 18px rgba(251,191,36,.12);background:linear-gradient(160deg,#1a1606,#0c1428)}
+.badge.unlocked .bi{filter:none}
+.badge.unlocked::after{content:"✓";position:absolute;top:6px;right:8px;color:var(--gold);font-weight:900;font-size:13px}
+
+/* Weekly */
+.wk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.wk{background:#0c1428;border:1px solid var(--line);border-radius:14px;padding:14px}
+.wk .wn{font-size:24px;font-weight:800;color:var(--cyan)}
+.wk .wl{font-size:11px;color:var(--sub);margin-top:3px}
+
+/* Nav */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:rgba(10,15,26,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 4px 10px;z-index:50}
+.nav button{background:none;border:none;color:var(--sub);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1;padding:2px;font-weight:600}
+.nav button .ni{font-size:20px}
+.nav button.active{color:var(--cyan)}
+.nav button.active .ni{transform:translateY(-1px);filter:drop-shadow(0 0 6px rgba(34,211,238,.6))}
+
+/* Section grid menu */
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.menu-item{background:#0c1428;border:1px solid var(--line);border-radius:16px;padding:14px 6px;text-align:center;cursor:pointer;transition:.15s}
+.menu-item:active{transform:scale(.96)}
+.menu-item .mi{font-size:26px}
+.menu-item .ml{font-size:11px;font-weight:700;margin-top:6px;line-height:1.3}
+
+/* Toast / overlay */
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid var(--gold);color:#fff;padding:13px 18px;border-radius:14px;font-weight:700;font-size:14px;z-index:100;opacity:0;pointer-events:none;transition:.35s;box-shadow:0 10px 30px rgba(0,0,0,.5);max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.overlay{position:fixed;inset:0;background:rgba(3,6,15,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:200;padding:24px}
+.overlay.show{display:flex;animation:fade .25s}
+.levelup{background:linear-gradient(160deg,#1a1606,#0d1426);border:1px solid var(--gold);border-radius:24px;padding:30px 24px;text-align:center;max-width:340px;width:100%;box-shadow:0 0 60px rgba(251,191,36,.3)}
+.levelup .lu-em{font-size:64px;animation:pop .5s}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.levelup h3{font-size:24px;margin:10px 0;color:var(--gold)}
+.levelup p{color:var(--sub);font-size:14px;margin-bottom:18px;line-height:1.6}
+
+.empty{text-align:center;color:var(--sub);padding:30px 10px;font-size:14px}
+.sec-title{font-size:13px;color:var(--sub);font-weight:700;margin:18px 2px 8px;text-transform:uppercase;letter-spacing:1px}
+.dot{font-size:9px;color:var(--green)}
+.back-link{color:var(--cyan);font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-bottom:12px}
+
+/* confetti */
+.confetti{position:fixed;width:10px;height:14px;z-index:300;pointer-events:none;top:-20px}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<section id="home" class="screen active">
+  <div class="app-top">
+    <div class="brand">Coach English RPG
+      <small>每天 15 分鐘，讓教練敢開口說英文</small>
+    </div>
+    <div class="lvl-chip" id="lvlChip">Lv.1</div>
+  </div>
+
+  <div class="card hero">
+    <div class="avatar-row">
+      <div class="avatar">🥋</div>
+      <div style="flex:1">
+        <div class="coach-name">Coach Yang</div>
+        <div class="coach-title" id="coachTitle">Rookie Coach 新手教練</div>
+      </div>
+    </div>
+    <div class="exp-wrap">
+      <div class="exp-bar"><div class="exp-fill" id="expFill"></div></div>
+      <div class="exp-label"><span id="expNow">EXP 0</span><span id="expNext">下一級 100</span></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat green"><div class="n" id="sStreak">0</div><div class="l">連續天數</div></div>
+      <div class="stat"><div class="n" id="sTasks">0</div><div class="l">今日任務</div></div>
+      <div class="stat gold"><div class="n" id="sFav">0</div><div class="l">收藏句子</div></div>
+      <div class="stat red"><div class="n" id="sQuiz">-</div><div class="l">最近測驗</div></div>
+    </div>
+  </div>
+
+  <div class="motiv" id="motiv">「你怎麼訓練選手，今天就怎麼訓練自己。」</div>
+
+  <div class="card">
+    <h2><span class="ico">⚔️</span>今日訓練任務</h2>
+    <div class="muted" style="margin-bottom:10px">完成至少 3 項即達成今日學習，維持連續天數。</div>
+    <div id="homeTasks"></div>
+    <button class="btn gold" onclick="go('tasks')">前往今日任務 →</button>
+  </div>
+
+  <div class="card">
+    <h2><span class="ico">🎮</span>訓練選單</h2>
+    <div class="menu-grid">
+      <div class="menu-item" onclick="go('words')"><div class="mi">📚</div><div class="ml">今日5單字</div></div>
+      <div class="menu-item" onclick="go('commands')"><div class="mi">📣</div><div class="ml">教練口令</div></div>
+      <div class="menu-item" onclick="go('flash')"><div class="mi">🃏</div><div class="ml">圖像單字卡</div></div>
+      <div class="menu-item" onclick="go('mnemonic')"><div class="mi">🧠</div><div class="ml">諧音記憶</div></div>
+      <div class="menu-item" onclick="go('dialogue')"><div class="mi">💬</div><div class="ml">情境對話</div></div>
+      <div class="menu-item" onclick="go('checkin')"><div class="mi">🔥</div><div class="ml">實戰打卡</div></div>
+      <div class="menu-item" onclick="go('quiz')"><div class="mi">📝</div><div class="ml">每日測驗</div></div>
+      <div class="menu-item" onclick="go('tkd')"><div class="mi">🥋</div><div class="ml">跆拳道庫</div></div>
+      <div class="menu-item" onclick="go('abroad')"><div class="mi">✈️</div><div class="ml">出國移地</div></div>
+      <div class="menu-item" onclick="go('parent')"><div class="mi">👪</div><div class="ml">家長溝通</div></div>
+      <div class="menu-item" onclick="go('fav')"><div class="mi">⭐</div><div class="ml">我的收藏</div></div>
+      <div class="menu-item" onclick="go('badges')"><div class="mi">🏅</div><div class="ml">徽章成就</div></div>
+      <div class="menu-item" onclick="go('weekly')"><div class="mi">📊</div><div class="ml">每週報表</div></div>
+      <div class="menu-item" onclick="go('checkin')"><div class="mi">🎯</div><div class="ml">今日挑戰</div></div>
+      <div class="menu-item" onclick="resetConfirm()"><div class="mi">♻️</div><div class="ml">重設資料</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TASKS ============ -->
+<section id="tasks" class="screen">
+  <div class="app-top"><div class="brand">今日任務 <small>每天自動產生 5 個任務</small></div><div class="lvl-chip" id="lvlChip2">Lv.1</div></div>
+  <div class="card">
+    <h2><span class="ico">⚔️</span>Daily Quest</h2>
+    <div class="muted" style="margin-bottom:12px">完成任一任務即獲得 Coach EXP。完成 3 項以上 → 今日學習達成 🔥</div>
+    <div id="taskList"></div>
+  </div>
+</section>
+
+<!-- ============ WORDS ============ -->
+<section id="words" class="screen">
+  <div class="app-top"><div class="brand">今日 5 單字 <small>實用教練單字</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div class="pills" id="wordPills"></div>
+  <div id="wordList"></div>
+  <button class="btn ghost" onclick="rollWords()">🔄 換一批單字</button>
+</section>
+
+<!-- ============ COMMANDS ============ -->
+<section id="commands" class="screen">
+  <div class="app-top"><div class="brand">教練口令 <small>現場可直接喊的英文</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="cmdList"></div>
+  <button class="btn ghost" onclick="rollCommands()">🔄 換一批口令</button>
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section id="flash" class="screen">
+  <div class="app-top"><div class="brand">圖像單字卡 <small>點卡片翻面記憶</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div class="flash" id="flashCard" onclick="flipCard()">
+    <div class="flash-inner">
+      <div class="flash-face" id="flashFront"></div>
+      <div class="flash-face flash-back" id="flashBack"></div>
+    </div>
+  </div>
+  <div class="flash-nav">
+    <button class="btn ghost sm" style="width:auto;padding:12px 18px" onclick="prevFlash(event)">← 上一張</button>
+    <span class="idx" id="flashIdx">1 / 1</span>
+    <button class="btn ghost sm" style="width:auto;padding:12px 18px" onclick="nextFlash(event)">下一張 →</button>
+  </div>
+  <div class="btn-row">
+    <button class="btn gold sm" onclick="favFlash(event)">⭐ 收藏</button>
+    <button class="btn green sm" onclick="learnFlash(event)">✅ 我會了 +5</button>
+  </div>
+</section>
+
+<!-- ============ MNEMONIC ============ -->
+<section id="mnemonic" class="screen">
+  <div class="app-top"><div class="brand">諧音記憶區 <small>台灣人好記諧音</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="mnemonicList"></div>
+</section>
+
+<!-- ============ DIALOGUE ============ -->
+<section id="dialogue" class="screen">
+  <div class="app-top"><div class="brand">情境對話練習 <small>選情境開口練</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="dialogScenes"></div>
+  <div id="dialogView" style="display:none"></div>
+</section>
+
+<!-- ============ CHECKIN ============ -->
+<section id="checkin" class="screen">
+  <div class="app-top"><div class="brand">實戰打卡 <small>把英文用出去</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div class="card">
+    <h2><span class="ico">🔥</span>今天你有在訓練場講出英文嗎？</h2>
+    <div class="muted" style="margin-bottom:14px">學會不是重點，講出來才算。選一個今天的真實狀況：</div>
+    <button class="btn green" style="margin-bottom:10px" onclick="checkin(1,20)">有，我講了 1 句　+20 EXP</button>
+    <button class="btn green" style="margin-bottom:10px" onclick="checkin(3,40)">有，我講了 3 句　+40 EXP</button>
+    <button class="btn gold" style="margin-bottom:10px" onclick="checkin(5,70)">有，我講了 5 句以上　+70 EXP</button>
+    <button class="btn ghost" onclick="checkin(0,0)">還沒有，明天挑戰</button>
+  </div>
+  <div class="card">
+    <h2><span class="ico">📈</span>打卡紀錄</h2>
+    <div id="checkinLog" class="muted"></div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="screen">
+  <div class="app-top"><div class="brand">每日小測驗 <small>5 題挑戰</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="quizStart" class="card">
+    <h2><span class="ico">📝</span>準備好了嗎？</h2>
+    <div class="muted" style="margin-bottom:14px">每次 5 題，混合中翻英、英翻中、諧音、情境題。<br>滿分 +50 EXP！</div>
+    <button class="btn gold" onclick="startQuiz()">開始測驗 ▶</button>
+  </div>
+  <div id="quizBody" style="display:none"></div>
+  <div id="quizResult" style="display:none"></div>
+</section>
+
+<!-- ============ FAVORITES ============ -->
+<section id="fav" class="screen">
+  <div class="app-top"><div class="brand">我的收藏 <small>收藏的單字與句子</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div class="pills" id="favPills">
+    <div class="pill active" onclick="renderFav('all',this)">全部</div>
+    <div class="pill" onclick="renderFav('word',this)">單字</div>
+    <div class="pill" onclick="renderFav('cmd',this)">教練口令</div>
+    <div class="pill" onclick="renderFav('dialog',this)">情境對話</div>
+    <div class="pill" onclick="renderFav('parent',this)">家長溝通</div>
+    <div class="pill" onclick="renderFav('abroad',this)">出國英文</div>
+  </div>
+  <div id="favList"></div>
+</section>
+
+<!-- ============ TAEKWONDO LIB ============ -->
+<section id="tkd" class="screen">
+  <div class="app-top"><div class="brand">跆拳道專用英文庫 <small>20 組核心詞</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="tkdList"></div>
+</section>
+
+<!-- ============ ABROAD ============ -->
+<section id="abroad" class="screen">
+  <div class="app-top"><div class="brand">出國移地訓練英文 <small>泰國/香港/國際交流</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="abroadList"></div>
+</section>
+
+<!-- ============ PARENT ============ -->
+<section id="parent" class="screen">
+  <div class="app-top"><div class="brand">家長溝通英文 <small>簡單好用</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div id="parentList"></div>
+</section>
+
+<!-- ============ BADGES ============ -->
+<section id="badges" class="screen">
+  <div class="app-top"><div class="brand">徽章成就 <small>解鎖你的教練之路</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div class="card"><div class="badge-grid" id="badgeGrid"></div></div>
+</section>
+
+<!-- ============ WEEKLY ============ -->
+<section id="weekly" class="screen">
+  <div class="app-top"><div class="brand">每週報表 <small>本週學習成果</small></div><span class="back-link" onclick="go('home')">← 首頁</span></div>
+  <div class="card">
+    <h2><span class="ico">📊</span>本週數據</h2>
+    <div class="wk-grid" id="weeklyGrid"></div>
+  </div>
+</section>
+
+<!-- Nav -->
+<div class="nav">
+  <button class="active" data-nav="home" onclick="go('home')"><span class="ni">🏠</span>首頁</button>
+  <button data-nav="tasks" onclick="go('tasks')"><span class="ni">⚔️</span>任務</button>
+  <button data-nav="checkin" onclick="go('checkin')"><span class="ni">🔥</span>打卡</button>
+  <button data-nav="quiz" onclick="go('quiz')"><span class="ni">📝</span>測驗</button>
+  <button data-nav="badges" onclick="go('badges')"><span class="ni">🏅</span>成就</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="overlay" id="overlay">
+  <div class="levelup">
+    <div class="lu-em" id="luEm">🎉</div>
+    <h3 id="luTitle">Level Up!</h3>
+    <p id="luDesc"></p>
+    <button class="btn gold" onclick="closeOverlay()">繼續訓練 💪</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const WORDS = [
+  // 身體部位
+  {cat:'身體部位',emoji:'🦵',en:'Leg',zh:'腿',ho:'累哥',pron:'lɛg',ex:'Lift your leg.',exZh:'把腿抬起來。',sit:'示範踢腿時使用。'},
+  {cat:'身體部位',emoji:'✊',en:'Fist',zh:'拳頭',ho:'費斯特',pron:'fɪst',ex:'Make a fist.',exZh:'握緊拳頭。',sit:'教正拳時使用。'},
+  {cat:'身體部位',emoji:'🦶',en:'Foot',zh:'腳',ho:'夫特',pron:'fʊt',ex:'Point your foot.',exZh:'腳尖繃直。',sit:'糾正踢擊腳型。'},
+  {cat:'身體部位',emoji:'🫳',en:'Hand',zh:'手',ho:'漢德',pron:'hænd',ex:'Hands up.',exZh:'手抬起來。',sit:'提醒防守。'},
+  {cat:'身體部位',emoji:'🧠',en:'Head',zh:'頭',ho:'黑德',pron:'hɛd',ex:'Protect your head.',exZh:'保護頭部。',sit:'對練護頭提醒。'},
+  {cat:'身體部位',emoji:'💪',en:'Shoulder',zh:'肩膀',ho:'秀德',pron:'ˈʃoʊldər',ex:'Relax your shoulders.',exZh:'肩膀放鬆。',sit:'放鬆指令。'},
+  {cat:'身體部位',emoji:'🦴',en:'Knee',zh:'膝蓋',ho:'尼',pron:'niː',ex:'Bend your knee.',exZh:'膝蓋彎曲。',sit:'教提膝動作。'},
+  {cat:'身體部位',emoji:'👁️',en:'Eye',zh:'眼睛',ho:'愛',pron:'aɪ',ex:'Keep your eyes on the target.',exZh:'眼睛看著目標。',sit:'集中注意力。'},
+  // 跆拳道動作
+  {cat:'跆拳道動作',emoji:'🦵',en:'Kick',zh:'踢',ho:'Kㄧ克',pron:'kɪk',ex:'Kick higher.',exZh:'踢高一點。',sit:'學生踢太低時使用。'},
+  {cat:'跆拳道動作',emoji:'🌀',en:'Roundhouse',zh:'橫踢',ho:'弱恩豪斯',pron:'ˈraʊndˌhaʊs',ex:'Throw a roundhouse kick.',exZh:'出一個橫踢。',sit:'指定踢法。'},
+  {cat:'跆拳道動作',emoji:'➡️',en:'Front kick',zh:'前踢',ho:'弗朗踢克',pron:'frʌnt kɪk',ex:'Use a front kick.',exZh:'用前踢。',sit:'基礎踢法教學。'},
+  {cat:'跆拳道動作',emoji:'⬅️',en:'Back kick',zh:'後踢',ho:'貝克踢克',pron:'bæk kɪk',ex:'Turn and back kick.',exZh:'轉身後踢。',sit:'進階反擊。'},
+  {cat:'跆拳道動作',emoji:'🪓',en:'Axe kick',zh:'下壓踢',ho:'艾克斯踢克',pron:'æks kɪk',ex:'Bring the axe kick down.',exZh:'下壓踢往下劈。',sit:'高位攻擊教學。'},
+  {cat:'跆拳道動作',emoji:'👊',en:'Punch',zh:'出拳',ho:'胖取',pron:'pʌntʃ',ex:'Punch straight.',exZh:'直拳出去。',sit:'手技教學。'},
+  {cat:'跆拳道動作',emoji:'🛡️',en:'Block',zh:'格擋',ho:'布拉克',pron:'blɑk',ex:'Block the kick.',exZh:'擋住那一踢。',sit:'防守動作。'},
+  {cat:'跆拳道動作',emoji:'🤸',en:'Dodge',zh:'閃躲',ho:'打取',pron:'dɑdʒ',ex:'Dodge and counter.',exZh:'閃開再反擊。',sit:'對練閃避。'},
+  // 訓練指令
+  {cat:'訓練指令',emoji:'✅',en:'Ready',zh:'準備',ho:'瑞迪',pron:'ˈrɛdi',ex:'Ready position.',exZh:'準備姿勢。',sit:'動作開始前。'},
+  {cat:'訓練指令',emoji:'🟢',en:'Start',zh:'開始',ho:'斯踏特',pron:'stɑrt',ex:'Start now.',exZh:'現在開始。',sit:'下達開始指令。'},
+  {cat:'訓練指令',emoji:'🔴',en:'Stop',zh:'停',ho:'斯踏普',pron:'stɑp',ex:'Stop. Reset.',exZh:'停，重來。',sit:'喊停。'},
+  {cat:'訓練指令',emoji:'🔁',en:'Again',zh:'再一次',ho:'阿跟',pron:'əˈgɛn',ex:'One more time, again.',exZh:'再一次。',sit:'要求重複。'},
+  {cat:'訓練指令',emoji:'⚡',en:'Faster',zh:'更快',ho:'法斯特',pron:'ˈfæstər',ex:'Move faster.',exZh:'動作快一點。',sit:'催速度。'},
+  {cat:'訓練指令',emoji:'🪨',en:'Stronger',zh:'更用力',ho:'斯壯格',pron:'ˈstrɔŋgər',ex:'Hit stronger.',exZh:'打用力一點。',sit:'要求力量。'},
+  {cat:'訓練指令',emoji:'🎯',en:'Focus',zh:'專注',ho:'佛克斯',pron:'ˈfoʊkəs',ex:'Stay focused.',exZh:'保持專注。',sit:'學生分心時。'},
+  {cat:'訓練指令',emoji:'🧘',en:'Relax',zh:'放鬆',ho:'瑞拉克斯',pron:'rɪˈlæks',ex:'Relax and breathe.',exZh:'放鬆，呼吸。',sit:'學生太緊繃。'},
+  // 比賽用語
+  {cat:'比賽用語',emoji:'🥅',en:'Score',zh:'得分',ho:'斯摳',pron:'skɔr',ex:'Score a point.',exZh:'拿一分。',sit:'比賽指導。'},
+  {cat:'比賽用語',emoji:'🛡️',en:'Defend',zh:'防守',ho:'迪芬德',pron:'dɪˈfɛnd',ex:'Defend well.',exZh:'守好。',sit:'落後時提醒。'},
+  {cat:'比賽用語',emoji:'⚔️',en:'Attack',zh:'進攻',ho:'阿踏克',pron:'əˈtæk',ex:'Attack first.',exZh:'先攻。',sit:'鼓勵主動。'},
+  {cat:'比賽用語',emoji:'📏',en:'Distance',zh:'距離',ho:'滴斯騰斯',pron:'ˈdɪstəns',ex:'Control the distance.',exZh:'控制距離。',sit:'對練指導。'},
+  {cat:'比賽用語',emoji:'⏱️',en:'Timing',zh:'時機',ho:'台明',pron:'ˈtaɪmɪŋ',ex:'Wait for the timing.',exZh:'等時機。',sit:'反擊教學。'},
+  // 鼓勵語
+  {cat:'鼓勵語',emoji:'👍',en:'Good job',zh:'做得好',ho:'估賈伯',pron:'gʊd dʒɑb',ex:'Good job, keep going.',exZh:'做得好，繼續。',sit:'稱讚學生。'},
+  {cat:'鼓勵語',emoji:'💖',en:'Believe',zh:'相信',ho:'比立夫',pron:'bɪˈliːv',ex:'Believe in yourself.',exZh:'相信自己。',sit:'賽前打氣。'},
+  {cat:'鼓勵語',emoji:'🔥',en:'Never give up',zh:'絕不放棄',ho:'內佛 給夫 阿普',pron:'ˈnɛvər gɪv ʌp',ex:'Never give up.',exZh:'絕不放棄。',sit:'落後時激勵。'},
+  {cat:'鼓勵語',emoji:'🌟',en:'You can do it',zh:'你做得到',ho:'優 肯 賭 it',pron:'juː kæn duː ɪt',ex:'You can do it!',exZh:'你做得到！',sit:'上場前。'},
+  // 家長溝通
+  {cat:'家長溝通',emoji:'📈',en:'Improve',zh:'進步',ho:'因普魯夫',pron:'ɪmˈpruːv',ex:'He is improving.',exZh:'他在進步。',sit:'回報家長。'},
+  {cat:'家長溝通',emoji:'🙏',en:'Support',zh:'支持',ho:'色波特',pron:'səˈpɔrt',ex:'Thank you for your support.',exZh:'謝謝您的支持。',sit:'感謝家長。'},
+  {cat:'家長溝通',emoji:'💪',en:'Practice',zh:'練習',ho:'普拉提斯',pron:'ˈpræktɪs',ex:'She needs more practice.',exZh:'她需要多練習。',sit:'建議家長。'},
+  // 出國移地訓練
+  {cat:'出國移地訓練',emoji:'✈️',en:'Training camp',zh:'移地訓練',ho:'吹寧 坎普',pron:'ˈtreɪnɪŋ kæmp',ex:'We are here for a training camp.',exZh:'我們來這裡移地訓練。',sit:'說明來意。'},
+  {cat:'出國移地訓練',emoji:'🤝',en:'Nice to meet you',zh:'很高興認識你',ho:'耐斯 兔 密特 優',pron:'naɪs tə miːt juː',ex:'Nice to meet you.',exZh:'很高興認識你。',sit:'與外國教練見面。'},
+  {cat:'出國移地訓練',emoji:'🕐',en:'Schedule',zh:'行程',ho:'斯給就',pron:'ˈskɛdʒuːl',ex:'What is the schedule today?',exZh:'今天的行程是什麼？',sit:'詢問安排。'},
+];
+
+const COMMANDS = [
+  {zh:'準備',en:'Ready.',ho:'瑞迪',when:'動作開始前。'},
+  {zh:'開始',en:'Start.',ho:'斯踏特',when:'下達開始指令。'},
+  {zh:'停',en:'Stop.',ho:'斯踏普',when:'需要喊停時。'},
+  {zh:'再一次',en:'One more time.',ho:'萬 莫 台姆',when:'要求重複動作。'},
+  {zh:'再試一次',en:'Try again.',ho:'踹 阿跟',when:'失敗後鼓勵再做。'},
+  {zh:'把手抬起來',en:'Keep your hands up.',ho:'奇普 優 漢茲 阿普',when:'學生防守掉手時使用。'},
+  {zh:'保持距離',en:'Keep distance.',ho:'奇普 滴斯騰斯',when:'對練太貼近時。'},
+  {zh:'不要急',en:'Don\'t rush.',ho:'동 拉許',when:'學生動作太趕。'},
+  {zh:'保持專注',en:'Stay focused.',ho:'斯帶 佛克斯特',when:'學生分心時。'},
+  {zh:'做得好',en:'Good job.',ho:'估 賈伯',when:'完成得好時稱讚。'},
+  {zh:'相信自己',en:'Believe in yourself.',ho:'比立夫 因 油色夫',when:'賽前打氣。'},
+  {zh:'你做得到',en:'You can do it.',ho:'優 肯 賭 it',when:'激勵學生。'},
+  {zh:'控制距離',en:'Control the distance.',ho:'控戳 惹 滴斯騰斯',when:'對練距離教學。'},
+  {zh:'盯住對手',en:'Watch your opponent.',ho:'襪取 優 阿剖能',when:'比賽觀察提醒。'},
+  {zh:'先攻',en:'Attack first.',ho:'阿踏克 佛斯特',when:'鼓勵主動進攻。'},
+  {zh:'守好',en:'Defend well.',ho:'迪芬德 威爾',when:'提醒防守。'},
+  {zh:'踢高一點',en:'Kick higher.',ho:'踢克 海爾',when:'踢太低時。'},
+  {zh:'呼吸',en:'Breathe.',ho:'布利惹',when:'學生太緊繃。'},
+  {zh:'放鬆肩膀',en:'Relax your shoulders.',ho:'瑞拉克斯 優 秀德斯',when:'動作僵硬時。'},
+  {zh:'保持平衡',en:'Keep your balance.',ho:'奇普 優 白冷斯',when:'踢擊重心不穩。'},
+];
+
+const MNEMONICS = [
+  {en:'Ready',zh:'準備',ho:'瑞迪',pron:'REH-dee',tip:'準備好了就 Ready'},
+  {en:'Focus',zh:'專注',ho:'佛克斯',pron:'FOH-kus',tip:'比賽要 Focus'},
+  {en:'Distance',zh:'距離',ho:'滴斯騰斯',pron:'DIS-təns',tip:'對練要控制 Distance'},
+  {en:'Balance',zh:'平衡',ho:'白冷斯',pron:'BA-ləns',tip:'踢擊要 Balance'},
+  {en:'Confidence',zh:'自信',ho:'康菲登斯',pron:'KON-fi-dəns',tip:'上場要有 Confidence'},
+  {en:'Power',zh:'力量',ho:'怕爾',pron:'POW-ər',tip:'打擊要有 Power'},
+  {en:'Speed',zh:'速度',ho:'斯必德',pron:'spiːd',tip:'反擊要靠 Speed'},
+  {en:'Guard',zh:'防守姿勢',ho:'尬德',pron:'gɑrd',tip:'手抬高守住 Guard'},
+  {en:'Respect',zh:'尊重',ho:'瑞斯派克特',pron:'rɪ-SPEKT',tip:'跆拳道精神是 Respect'},
+  {en:'Discipline',zh:'紀律',ho:'低斯西普林',pron:'DIS-ə-plin',tip:'好教練教 Discipline'},
+  {en:'Improve',zh:'進步',ho:'因普魯夫',pron:'im-PROOV',tip:'每天一點點 Improve'},
+  {en:'Champion',zh:'冠軍',ho:'參皮恩',pron:'CHAM-pee-ən',tip:'目標是 Champion'},
+];
+
+const DIALOGUES = [
+  {name:'訓練場指令',icon:'🏟️',other:'Student',lines:[
+    {s:'coach',en:'Line up, everyone.',zh:'大家排好隊。'},
+    {s:'other',en:'Yes, Coach!',zh:'好的，教練！'},
+    {s:'coach',en:'Ready? Start your warm-up.',zh:'準備好了嗎？開始熱身。'},
+    {s:'other',en:'Okay, starting now.',zh:'好，現在開始。'},
+  ],key:'Ready? Start your warm-up.｜準備好了嗎？開始熱身。'},
+  {name:'鼓勵學生',icon:'💖',other:'Student',lines:[
+    {s:'coach',en:'You did better than yesterday.',zh:'你比昨天更好了。'},
+    {s:'other',en:'Thank you, Coach.',zh:'謝謝教練。'},
+    {s:'coach',en:'Believe in yourself. You can do it.',zh:'相信自己，你做得到。'},
+  ],key:'Believe in yourself.｜相信自己。'},
+  {name:'糾正動作',icon:'🛠️',other:'Student',lines:[
+    {s:'coach',en:'Keep your hands up when you kick.',zh:'踢的時候手要抬高。'},
+    {s:'other',en:'Like this?',zh:'像這樣嗎？'},
+    {s:'coach',en:'Yes, much better. One more time.',zh:'對，好多了，再一次。'},
+  ],key:'Keep your hands up.｜把手抬起來。'},
+  {name:'比賽現場',icon:'🥇',other:'Student',lines:[
+    {s:'coach',en:'Watch your opponent. Control the distance.',zh:'盯住對手，控制距離。'},
+    {s:'other',en:'Got it.',zh:'了解。'},
+    {s:'coach',en:'Attack first! Don\'t wait.',zh:'先攻！別等。'},
+  ],key:'Control the distance.｜控制距離。'},
+  {name:'品勢訓練',icon:'🧎',other:'Student',lines:[
+    {s:'coach',en:'Show me your poomsae.',zh:'做一遍品勢給我看。'},
+    {s:'other',en:'Which one, Coach?',zh:'哪一個，教練？'},
+    {s:'coach',en:'Slow and strong. Keep your balance.',zh:'放慢、有力，保持平衡。'},
+  ],key:'Keep your balance.｜保持平衡。'},
+  {name:'對練訓練',icon:'🤼',other:'Student',lines:[
+    {s:'coach',en:'Keep distance and watch his kicks.',zh:'保持距離，注意他的踢擊。'},
+    {s:'other',en:'Okay, Coach.',zh:'好的，教練。'},
+    {s:'coach',en:'Dodge and counter. Good timing!',zh:'閃開再反擊，時機抓得好！'},
+  ],key:'Dodge and counter.｜閃開再反擊。'},
+  {name:'出國移地訓練',icon:'✈️',other:'Foreign Coach',lines:[
+    {s:'coach',en:'Hi, we are here for a training camp.',zh:'你好，我們來這裡移地訓練。'},
+    {s:'other',en:'Welcome! Where are you from?',zh:'歡迎！你們從哪來？'},
+    {s:'coach',en:'We are from Taiwan. What time does training start?',zh:'我們來自台灣。訓練幾點開始？'},
+  ],key:'What time does training start?｜訓練幾點開始？'},
+  {name:'跟外國教練自我介紹',icon:'🤝',other:'Foreign Coach',lines:[
+    {s:'coach',en:'Hi, I\'m Coach Yang from Taiwan.',zh:'嗨，我是來自台灣的楊教練。'},
+    {s:'other',en:'Nice to meet you, Coach Yang.',zh:'很高興認識你，楊教練。'},
+    {s:'coach',en:'I\'m a taekwondo coach. Nice to meet you too.',zh:'我是跆拳道教練，也很高興認識你。'},
+  ],key:'I\'m a taekwondo coach.｜我是跆拳道教練。'},
+  {name:'跟外國家長溝通',icon:'👪',other:'Parent',lines:[
+    {s:'coach',en:'Your child did a good job today.',zh:'您的孩子今天表現很好。'},
+    {s:'other',en:'Thank you, Coach.',zh:'謝謝教練。'},
+    {s:'coach',en:'He is improving. Please keep encouraging him.',zh:'他在進步，請多鼓勵他。'},
+  ],key:'He is improving.｜他在進步。'},
+  {name:'介紹育林國中',icon:'🏫',other:'Foreign Coach',lines:[
+    {s:'coach',en:'I coach at Yulin Junior High School.',zh:'我在育林國中當教練。'},
+    {s:'other',en:'That sounds great.',zh:'聽起來很棒。'},
+    {s:'coach',en:'We have a strong taekwondo team there.',zh:'我們那裡有很強的跆拳道隊。'},
+  ],key:'I coach at Yulin Junior High School.｜我在育林國中當教練。'},
+  {name:'介紹雄麒道館',icon:'🥋',other:'Foreign Coach',lines:[
+    {s:'coach',en:'I also run Hsiungchi Taekwondo Dojo.',zh:'我也經營雄麒跆拳道館。'},
+    {s:'other',en:'How many students do you have?',zh:'你有多少學生？'},
+    {s:'coach',en:'We train kids and competition athletes.',zh:'我們訓練小朋友和比賽選手。'},
+  ],key:'I run Hsiungchi Taekwondo Dojo.｜我經營雄麒道館。'},
+];
+
+const TKD = [
+  {en:'Front kick',zh:'前踢',ex:'Use a front kick to the body.｜對身體用前踢。'},
+  {en:'Roundhouse kick',zh:'橫踢',ex:'A fast roundhouse kick scores.｜快速橫踢能得分。'},
+  {en:'Side kick',zh:'側踢',ex:'Push him back with a side kick.｜用側踢把他逼退。'},
+  {en:'Back kick',zh:'後踢',ex:'Turn and use a back kick.｜轉身用後踢。'},
+  {en:'Axe kick',zh:'下壓踢',ex:'Bring the axe kick down hard.｜下壓踢用力劈下。'},
+  {en:'Sparring',zh:'對練',ex:'Sparring time, hands up.｜對練時間，手抬高。'},
+  {en:'Poomsae',zh:'品勢',ex:'Practice your poomsae slowly.｜慢慢練品勢。'},
+  {en:'Belt test',zh:'晉級測驗',ex:'Your belt test is next week.｜你下週晉級測驗。'},
+  {en:'Black belt',zh:'黑帶',ex:'Work hard for your black belt.｜為黑帶努力。'},
+  {en:'Referee',zh:'裁判',ex:'Respect the referee.｜尊重裁判。'},
+  {en:'Opponent',zh:'對手',ex:'Watch your opponent\'s feet.｜注意對手的腳。'},
+  {en:'Guard',zh:'防守姿勢',ex:'Keep your guard up.｜守好你的防守姿勢。'},
+  {en:'Balance',zh:'平衡',ex:'Keep your balance after the kick.｜踢完保持平衡。'},
+  {en:'Distance',zh:'距離',ex:'Control the distance well.｜好好控制距離。'},
+  {en:'Speed',zh:'速度',ex:'Speed wins the point.｜速度贏得分數。'},
+  {en:'Power',zh:'力量',ex:'Add more power to the kick.｜踢擊再多點力量。'},
+  {en:'Accuracy',zh:'準確度',ex:'Accuracy is more important than power.｜準確比力量重要。'},
+  {en:'Confidence',zh:'自信',ex:'Step in with confidence.｜帶著自信上場。'},
+  {en:'Discipline',zh:'紀律',ex:'Taekwondo teaches discipline.｜跆拳道教導紀律。'},
+  {en:'Respect',zh:'尊重',ex:'Bow and show respect.｜鞠躬展現尊重。'},
+];
+
+const ABROAD = [
+  {cat:'自我介紹',en:'Hi, I\'m Coach Yang from Taiwan.',zh:'嗨，我是來自台灣的楊教練。'},
+  {cat:'自我介紹',en:'I\'m a taekwondo coach.',zh:'我是跆拳道教練。'},
+  {cat:'自我介紹',en:'Nice to meet you.',zh:'很高興認識你。'},
+  {cat:'介紹學校',en:'I coach at Yulin Junior High School.',zh:'我在育林國中當教練。'},
+  {cat:'介紹道館',en:'I run Hsiungchi Taekwondo Dojo.',zh:'我經營雄麒跆拳道館。'},
+  {cat:'詢問訓練',en:'What time does training start?',zh:'訓練幾點開始？'},
+  {cat:'詢問訓練',en:'How long is the training session?',zh:'訓練時間多長？'},
+  {cat:'詢問集合',en:'Where should we meet tomorrow?',zh:'我們明天在哪裡集合？'},
+  {cat:'詢問集合',en:'What time should we be here?',zh:'我們該幾點到這裡？'},
+  {cat:'交流',en:'Can we train together?',zh:'我們可以一起訓練嗎？'},
+  {cat:'交流',en:'Your athletes are very strong.',zh:'你的選手很強。'},
+  {cat:'打招呼',en:'Hello! Good to see you.',zh:'你好！很高興見到你。'},
+  {cat:'打招呼',en:'Let\'s do our best today.',zh:'今天我們一起加油。'},
+  {cat:'生活',en:'Where is the restroom?',zh:'廁所在哪裡？'},
+  {cat:'生活',en:'Can I have some water?',zh:'可以給我一些水嗎？'},
+  {cat:'飯店',en:'I have a reservation under Yang.',zh:'我用楊的名字訂了房。'},
+  {cat:'交通',en:'How do we get to the gym?',zh:'我們怎麼去體育館？'},
+  {cat:'餐廳',en:'A table for ten, please.',zh:'十個人的位子，謝謝。'},
+  {cat:'餐廳',en:'Not too spicy, please.',zh:'請不要太辣。'},
+];
+
+const PARENTS = [
+  {en:'Your child did a good job today.',zh:'您的孩子今天表現很好。'},
+  {en:'He is improving every week.',zh:'他每週都在進步。'},
+  {en:'She works very hard.',zh:'她非常努力。'},
+  {en:'He needs more practice at home.',zh:'他在家需要多練習。'},
+  {en:'Please encourage your child.',zh:'請鼓勵您的孩子。'},
+  {en:'Thank you for your support.',zh:'謝謝您的支持。'},
+  {en:'Today\'s performance was excellent.',zh:'今天的表現很棒。'},
+  {en:'Let\'s help him build confidence.',zh:'我們一起幫他建立自信。'},
+  {en:'She did her best today.',zh:'她今天盡了全力。'},
+  {en:'Keep cheering for him at competitions.',zh:'比賽時請繼續為他加油。'},
+];
+
+const LEVELS = [
+  {lv:1,title:'Rookie Coach 新手教練'},
+  {lv:5,title:'Basic Coach 基礎教練'},
+  {lv:10,title:'Training Coach 訓練教練'},
+  {lv:20,title:'Competition Coach 比賽教練'},
+  {lv:30,title:'International Coach 國際教練'},
+  {lv:50,title:'Master Coach 英文教練王'},
+];
+
+const BADGES = [
+  {id:'first',i:'👣',n:'First Step',d:'完成第一天學習'},
+  {id:'streak7',i:'🔥',n:'7 Days Streak',d:'連續學習 7 天'},
+  {id:'streak30',i:'⚡',n:'30 Days Warrior',d:'連續學習 30 天'},
+  {id:'cmd30',i:'📣',n:'Command Master',d:'學會 30 句訓練口令'},
+  {id:'cheer10',i:'💖',n:'No Fear Coach',d:'學會 10 句鼓勵英文'},
+  {id:'spar',i:'🤼',n:'Sparring Coach',d:'完成對練英文關卡'},
+  {id:'poomsae',i:'🧎',n:'Poomsae Coach',d:'完成品勢英文關卡'},
+  {id:'parent',i:'👪',n:'Parent Talker',d:'完成家長溝通英文'},
+  {id:'thai',i:'🇹🇭',n:'Thailand Ready',d:'完成出國移地訓練英文'},
+  {id:'intl',i:'🌍',n:'International Coach',d:'總 EXP 達到 3000'},
+];
+
+const MOTIVS = [
+  '「你怎麼訓練選手，今天就怎麼訓練自己。」',
+  '「一天一句，也是在往國際教練前進。」',
+  '「英文不是天分，是每天多開口一次。」',
+  '「選手怕的招，多練幾次就不怕；英文也一樣。」',
+  '「今天的 15 分鐘，就是出國時的底氣。」',
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const KEY='coachEnglishRPG_v1';
+const todayStr=()=>new Date().toISOString().slice(0,10);
+let S=load();
+
+function defaultState(){
+  return {
+    exp:0, lvl:1,
+    streak:0, lastStudyDay:null,
+    tasksDay:null, tasks:[false,false,false,false,false],
+    todayWordSeed:null, todayCmdSeed:null,
+    favWords:[], favCmds:[], favDialogs:[], favParents:[], favAbroad:[],
+    learnedWords:[], learnedCmds:[],
+    learnedCheerCount:0,
+    lastQuiz:null,
+    checkins:[], // {date, n, exp}
+    badges:[],
+    week:{}, // date -> {studied:true, exp, words, cmds, quiz, checkins, badges}
+    sceneDone:[],
+  };
+}
+function load(){
+  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.exp!==undefined)return Object.assign(defaultState(),d);}catch(e){}
+  return defaultState();
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(S));}
+
+/* ============================================================
+   LEVEL / EXP
+   ============================================================ */
+function expForLevel(lv){ return Math.round(100*lv + 20*lv*(lv-1)); } // cumulative needed to reach lv+1 baseline
+function levelFromExp(exp){
+  let lv=1;
+  while(exp>=cumExp(lv+1)) lv++;
+  return lv;
+}
+function cumExp(lv){ // total exp needed to BE at level lv (lv1=0)
+  let t=0; for(let i=1;i<lv;i++){ t+=100+ (i-1)*40; } return t;
+}
+function titleForLevel(lv){
+  let t=LEVELS[0].title;
+  for(const L of LEVELS){ if(lv>=L.lv) t=L.title; }
+  return t;
+}
+function addExp(amount, reason){
+  if(amount<=0){ return; }
+  const before=S.lvl;
+  S.exp+=amount;
+  const nl=levelFromExp(S.exp);
+  recordWeek(d=>{d.exp=(d.exp||0)+amount;});
+  if(nl>before){
+    S.lvl=nl;
+    levelUp(nl);
+  }
+  S.lvl=nl;
+  checkBadges();
+  save();
+  refreshHome();
+}
+function levelUp(nl){
+  const t=titleForLevel(nl);
+  document.getElementById('luEm').textContent='🎉';
+  document.getElementById('luTitle').textContent='Level Up！Lv.'+nl;
+  document.getElementById('luDesc').textContent='你升級為 '+t.split(' ').slice(0,2).join(' ')+'！\n'+t;
+  showOverlay();
+}
+
+/* ============================================================
+   STREAK / STUDY DAY
+   ============================================================ */
+function markStudyProgress(){
+  // called when a task completes; if >=3 tasks done today, count study day
+  const done=S.tasks.filter(Boolean).length;
+  if(done>=3 && S.lastStudyDay!==todayStr()){
+    const y=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    if(S.lastStudyDay===y) S.streak++;
+    else S.streak=1;
+    S.lastStudyDay=todayStr();
+    recordWeek(d=>{d.studied=true;});
+    if(!S.badges.includes('first')){ unlockBadge('first'); }
+    if(S.streak>=7) unlockBadge('streak7');
+    if(S.streak>=30) unlockBadge('streak30');
+    toast('🔥 今日學習達成！連續 '+S.streak+' 天');
+    save();
+  }
+}
+
+/* ============================================================
+   WEEK RECORD
+   ============================================================ */
+function recordWeek(fn){
+  const k=todayStr();
+  if(!S.week[k]) S.week[k]={studied:false,exp:0,words:0,cmds:0,quizSum:0,quizN:0,checkins:0,badges:0};
+  fn(S.week[k]);
+}
+function weekDates(){
+  const arr=[]; const now=new Date();
+  for(let i=6;i>=0;i--){ arr.push(new Date(now-i*86400000).toISOString().slice(0,10)); }
+  return arr;
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+function unlockBadge(id){
+  if(S.badges.includes(id)) return;
+  S.badges.push(id);
+  recordWeek(d=>{d.badges=(d.badges||0)+1;});
+  const b=BADGES.find(x=>x.id===id);
+  if(b) setTimeout(()=>toast('🏅 解鎖徽章：'+b.n),400);
+  save();
+}
+function checkBadges(){
+  if(S.learnedCmds.length>=30) unlockBadge('cmd30');
+  if(S.learnedCheerCount>=10) unlockBadge('cheer10');
+  if(S.exp>=3000) unlockBadge('intl');
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));
+  window.scrollTo(0,0);
+  if(id==='home')refreshHome();
+  if(id==='tasks')renderTasks();
+  if(id==='words')renderWords();
+  if(id==='commands')renderCommands();
+  if(id==='flash')renderFlash();
+  if(id==='mnemonic')renderMnemonics();
+  if(id==='dialogue')renderScenes();
+  if(id==='checkin')renderCheckin();
+  if(id==='quiz')resetQuizScreen();
+  if(id==='fav')renderFav('all',document.querySelector('#favPills .pill'));
+  if(id==='tkd')renderTkd();
+  if(id==='abroad')renderAbroad();
+  if(id==='parent')renderParent();
+  if(id==='badges')renderBadges();
+  if(id==='weekly')renderWeekly();
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function refreshHome(){
+  ensureDaily();
+  document.getElementById('lvlChip').textContent='Lv.'+S.lvl;
+  document.getElementById('lvlChip2').textContent='Lv.'+S.lvl;
+  document.getElementById('coachTitle').textContent=titleForLevel(S.lvl);
+  const base=cumExp(S.lvl), next=cumExp(S.lvl+1);
+  const pct=Math.min(100,Math.round((S.exp-base)/(next-base)*100));
+  document.getElementById('expFill').style.width=pct+'%';
+  document.getElementById('expNow').textContent='EXP '+S.exp;
+  document.getElementById('expNext').textContent='下一級 '+next;
+  document.getElementById('sStreak').textContent=S.streak;
+  document.getElementById('sTasks').textContent=S.tasks.filter(Boolean).length;
+  document.getElementById('sFav').textContent=S.favWords.length+S.favCmds.length+S.favDialogs.length+S.favParents.length+S.favAbroad.length;
+  document.getElementById('sQuiz').textContent=S.lastQuiz!==null?S.lastQuiz:'-';
+  document.getElementById('motiv').textContent=MOTIVS[(new Date().getDate())%MOTIVS.length];
+  renderHomeTasks();
+}
+const TASK_DEFS=[
+  {ico:'📚',t:'學會 5 個單字',s:'今日 5 單字',exp:20,go:'words'},
+  {ico:'📣',t:'練習 5 句教練口令',s:'今日教練口令',exp:20,go:'commands'},
+  {ico:'💬',t:'完成 1 組情境對話',s:'情境對話練習',exp:20,go:'dialogue'},
+  {ico:'📝',t:'完成 1 次每日小測驗',s:'每日測驗',exp:20,go:'quiz'},
+  {ico:'🔥',t:'完成 1 次實戰打卡',s:'訓練場開口',exp:20,go:'checkin'},
+];
+function renderHomeTasks(){
+  const el=document.getElementById('homeTasks');
+  el.innerHTML=TASK_DEFS.map((t,i)=>`
+    <div class="task ${S.tasks[i]?'done':''}" onclick="go('${t.go}')">
+      <div class="tico">${t.ico}</div>
+      <div class="tinfo"><div class="tt">${t.t}</div><div class="ts">${t.s} · +${t.exp} EXP</div></div>
+      <div class="check">✓</div>
+    </div>`).join('');
+}
+function renderTasks(){
+  ensureDaily();
+  const el=document.getElementById('taskList');
+  const done=S.tasks.filter(Boolean).length;
+  el.innerHTML=TASK_DEFS.map((t,i)=>`
+    <div class="task ${S.tasks[i]?'done':''}">
+      <div class="tico">${t.ico}</div>
+      <div class="tinfo"><div class="tt">${t.t}</div><div class="ts">${t.s}</div></div>
+      <div style="text-align:right">
+        <div class="tx">+${t.exp}</div>
+      </div>
+      ${S.tasks[i]?'<div class="check">✓</div>':`<button class="btn sm" style="width:auto;padding:9px 12px;margin:0" onclick="go('${t.go}')">前往</button>`}
+    </div>`).join('') +
+    `<div class="muted" style="margin-top:8px;text-align:center">今日完成 ${done}/5 ${done>=3?'🔥 已達成今日學習！':'（再 '+(3-done)+' 項達成今日學習）'}</div>`;
+}
+function completeTask(i){
+  ensureDaily();
+  if(S.tasks[i]) return false;
+  S.tasks[i]=true;
+  addExp(TASK_DEFS[i].exp,'task');
+  toast('✅ 任務完成！Coach EXP +'+TASK_DEFS[i].exp);
+  markStudyProgress();
+  const done=S.tasks.filter(Boolean).length;
+  if(done===5) setTimeout(()=>toast('🏆 今日訓練完成！你又比昨天更強了。'),700);
+  save();
+  renderTasks(); renderHomeTasks();
+  return true;
+}
+
+/* ============================================================
+   DAILY RESET
+   ============================================================ */
+function ensureDaily(){
+  const t=todayStr();
+  if(S.tasksDay!==t){
+    S.tasksDay=t;
+    S.tasks=[false,false,false,false,false];
+    S.todayWordSeed=Math.floor(Math.random()*100000);
+    S.todayCmdSeed=Math.floor(Math.random()*100000);
+    // streak break check
+    const y=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    if(S.lastStudyDay && S.lastStudyDay!==y && S.lastStudyDay!==t){ S.streak=0; }
+    save();
+  }
+  if(S.todayWordSeed===null){S.todayWordSeed=Math.floor(Math.random()*100000);save();}
+  if(S.todayCmdSeed===null){S.todayCmdSeed=Math.floor(Math.random()*100000);save();}
+}
+function seededPick(arr,seed,n){
+  // deterministic shuffle by seed
+  const a=arr.map((x,i)=>({x,r:((seed+1)*(i+7)*9301+49297)%233280/233280})).sort((p,q)=>p.r-q.r);
+  return a.slice(0,n).map(o=>o.x);
+}
+
+/* ============================================================
+   WORDS
+   ============================================================ */
+let wordFilter='今日';
+const WORD_CATS=['今日','身體部位','跆拳道動作','訓練指令','比賽用語','鼓勵語','家長溝通','出國移地訓練'];
+function renderWords(){
+  ensureDaily();
+  const pl=document.getElementById('wordPills');
+  pl.innerHTML=WORD_CATS.map(c=>`<div class="pill ${c===wordFilter?'active':''}" onclick="setWordFilter('${c}')">${c}</div>`).join('');
+  let list;
+  if(wordFilter==='今日'){ list=seededPick(WORDS,S.todayWordSeed,5); }
+  else list=WORDS.filter(w=>w.cat===wordFilter);
+  const el=document.getElementById('wordList');
+  el.innerHTML=list.map(w=>wordCardHTML(w)).join('');
+}
+function setWordFilter(c){wordFilter=c;renderWords();}
+function rollWords(){ S.todayWordSeed=Math.floor(Math.random()*100000); save(); wordFilter='今日'; renderWords(); toast('🔄 換了一批新單字'); }
+function wordCardHTML(w){
+  const favd=S.favWords.includes(w.en);
+  const learned=S.learnedWords.includes(w.en);
+  return `<div class="wordcard">
+    <span class="tag">${w.cat}</span>
+    <div class="top">
+      <div class="emoji">${w.emoji}</div>
+      <div style="flex:1"><div class="en">${w.en}</div><div class="zh">${w.zh}</div></div>
+      <div class="speak" onclick="speak('${esc(w.en)}')">🔊</div>
+    </div>
+    <div class="row-line"><b>諧音</b><span>${w.ho}</span></div>
+    <div class="row-line"><b>發音</b><span>/${w.pron}/</span></div>
+    <div class="row-line ex"><b>例句</b><span>${w.ex}<br><span style="color:var(--sub)">${w.exZh}</span></span></div>
+    <div class="row-line"><b>情境</b><span>${w.sit}</span></div>
+    <div class="mini-row">
+      <button class="btn ${favd?'gold':'ghost'} sm" onclick="toggleFavWord('${esc(w.en)}',this)">${favd?'★ 已收藏':'☆ 收藏'}</button>
+      <button class="btn ${learned?'green':'ghost'} sm" onclick="learnWord('${esc(w.en)}',this,${w.cat==='鼓勵語'})">${learned?'✅ 已學會':'我已學會 +5'}</button>
+    </div>
+  </div>`;
+}
+let wordsViewedComplete=false;
+function toggleFavWord(en,btn){
+  const i=S.favWords.indexOf(en);
+  if(i>=0)S.favWords.splice(i,1);else S.favWords.push(en);
+  save();btn.outerHTML=''; renderWords(); refreshHome();
+}
+function learnWord(en,btn,isCheer){
+  if(!S.learnedWords.includes(en)){
+    S.learnedWords.push(en);
+    if(isCheer)S.learnedCheerCount++;
+    addExp(5,'word');
+    recordWeek(d=>{d.words=(d.words||0)+1;});
+    toast('+5 EXP｜學會 '+en);
+    // complete the words task after learning 5
+    if(S.learnedWords.length>=5 || true){ maybeCompleteWordTask(); }
+  }
+  save(); renderWords();
+}
+let learnedTodaySet=new Set();
+function maybeCompleteWordTask(){
+  if(!S.tasks[0]) completeTask(0);
+}
+
+/* ============================================================
+   COMMANDS
+   ============================================================ */
+function renderCommands(){
+  ensureDaily();
+  const list=seededPick(COMMANDS,S.todayCmdSeed,5);
+  document.getElementById('cmdList').innerHTML=list.map(c=>cmdCardHTML(c)).join('');
+}
+function rollCommands(){ S.todayCmdSeed=Math.floor(Math.random()*100000); save(); renderCommands(); toast('🔄 換了一批口令'); }
+function cmdCardHTML(c){
+  const favd=S.favCmds.includes(c.en);
+  const learned=S.learnedCmds.includes(c.en);
+  return `<div class="wordcard">
+    <div class="top">
+      <div style="flex:1"><div class="en" style="font-size:18px">${c.en}</div><div class="zh">${c.zh}</div></div>
+      <div class="speak" onclick="speak('${esc(c.en)}')">🔊</div>
+    </div>
+    <div class="row-line"><b>諧音</b><span>${c.ho}</span></div>
+    <div class="row-line"><b>時機</b><span>${c.when}</span></div>
+    <div class="mini-row">
+      <button class="btn ${favd?'gold':'ghost'} sm" onclick="toggleFavCmd('${esc(c.en)}')">${favd?'★ 已收藏':'☆ 收藏'}</button>
+      <button class="btn ${learned?'green':'ghost'} sm" onclick="learnCmd('${esc(c.en)}')">${learned?'✅ 已學會':'我已學會 +5'}</button>
+    </div>
+  </div>`;
+}
+function toggleFavCmd(en){const i=S.favCmds.indexOf(en);if(i>=0)S.favCmds.splice(i,1);else S.favCmds.push(en);save();renderCommands();refreshHome();}
+function learnCmd(en){
+  if(!S.learnedCmds.includes(en)){
+    S.learnedCmds.push(en);
+    addExp(5,'cmd');
+    recordWeek(d=>{d.cmds=(d.cmds||0)+1;});
+    toast('+5 EXP｜口令 '+en);
+    checkBadges();
+    if(!S.tasks[1]) completeTask(1);
+  }
+  save();renderCommands();
+}
+
+/* ============================================================
+   FLASHCARDS
+   ============================================================ */
+let flashIdx=0, flashSet=[];
+function renderFlash(){
+  flashSet=WORDS.slice();
+  flashIdx=Math.min(flashIdx,flashSet.length-1);
+  document.getElementById('flashCard').classList.remove('flip');
+  drawFlash();
+}
+function drawFlash(){
+  const w=flashSet[flashIdx];
+  document.getElementById('flashFront').innerHTML=`<div class="bigemoji">${w.emoji}</div><div class="fen">${w.en}</div><div class="ftip">點一下翻面 👆</div>`;
+  document.getElementById('flashBack').innerHTML=`<div class="fzh">${w.zh}</div><div class="fho">${w.ho} · /${w.pron}/</div><div class="fex">${w.ex}<br>${w.exZh}</div>`;
+  document.getElementById('flashIdx').textContent=(flashIdx+1)+' / '+flashSet.length;
+}
+function flipCard(){document.getElementById('flashCard').classList.toggle('flip');}
+function nextFlash(e){e.stopPropagation();flashIdx=(flashIdx+1)%flashSet.length;document.getElementById('flashCard').classList.remove('flip');drawFlash();}
+function prevFlash(e){e.stopPropagation();flashIdx=(flashIdx-1+flashSet.length)%flashSet.length;document.getElementById('flashCard').classList.remove('flip');drawFlash();}
+function favFlash(e){e.stopPropagation();const en=flashSet[flashIdx].en;if(!S.favWords.includes(en))S.favWords.push(en);save();toast('⭐ 已收藏 '+en);refreshHome();}
+function learnFlash(e){e.stopPropagation();const w=flashSet[flashIdx];if(!S.learnedWords.includes(w.en)){S.learnedWords.push(w.en);if(w.cat==='鼓勵語')S.learnedCheerCount++;addExp(5);recordWeek(d=>{d.words=(d.words||0)+1;});toast('+5 EXP｜學會 '+w.en);}save();nextFlash(e);}
+
+/* ============================================================
+   MNEMONICS
+   ============================================================ */
+function renderMnemonics(){
+  document.getElementById('mnemonicList').innerHTML=MNEMONICS.map(m=>`
+    <div class="wordcard">
+      <div class="top"><div style="flex:1"><div class="en">${m.en}</div><div class="zh">${m.zh}</div></div><div class="speak" onclick="speak('${esc(m.en)}')">🔊</div></div>
+      <div class="row-line"><b>諧音</b><span>${m.ho}</span></div>
+      <div class="row-line"><b>發音</b><span>${m.pron}</span></div>
+      <div class="row-line ex"><b>口訣</b><span>${m.tip}</span></div>
+    </div>`).join('');
+}
+
+/* ============================================================
+   DIALOGUE
+   ============================================================ */
+function renderScenes(){
+  document.getElementById('dialogView').style.display='none';
+  const el=document.getElementById('dialogScenes');
+  el.style.display='block';
+  el.innerHTML=`<div class="card"><h2><span class="ico">💬</span>選一個情境</h2>
+    <div class="menu-grid">`+DIALOGUES.map((d,i)=>`
+      <div class="menu-item" onclick="openScene(${i})"><div class="mi">${d.icon}</div><div class="ml">${d.name}${S.sceneDone.includes(i)?' <span class=dot>●</span>':''}</div></div>`).join('')+`</div></div>`;
+}
+function openScene(i){
+  const d=DIALOGUES[i];
+  document.getElementById('dialogScenes').style.display='none';
+  const v=document.getElementById('dialogView');
+  v.style.display='block';
+  const favd=S.favDialogs.includes(d.name);
+  v.innerHTML=`<span class="back-link" onclick="renderScenes()">← 換情境</span>
+    <div class="card">
+      <h2><span class="ico">${d.icon}</span>${d.name}</h2>
+      <div style="margin:10px 0">${d.lines.map(l=>`
+        <div class="bubble ${l.s==='coach'?'coach':'other'}">
+          <div>${l.s==='coach'?'🧑‍🏫 ':''}${l.en}${l.s!=='coach'?' 🙋':''}</div>
+          <div class="bzh">${l.zh}</div>
+        </div>`).join('')}</div>
+      <div class="keysent">📌 今日重點句型：<br>${d.key}</div>
+      <div class="btn-row">
+        <button class="btn ${favd?'gold':'ghost'} sm" onclick="favDialog('${esc(d.name)}')">${favd?'★ 已收藏':'☆ 收藏對話'}</button>
+        <button class="btn green sm" onclick="doneScene(${i})">我唸完了 ✅</button>
+      </div>
+    </div>`;
+}
+function favDialog(name){const i=S.favDialogs.indexOf(name);if(i>=0)S.favDialogs.splice(i,1);else S.favDialogs.push(name);save();const idx=DIALOGUES.findIndex(d=>d.name===name);openScene(idx);refreshHome();}
+function doneScene(i){
+  const d=DIALOGUES[i];
+  if(!S.sceneDone.includes(i)){S.sceneDone.push(i);addExp(15,'dialog');toast('+15 EXP｜完成情境對話');}
+  // badge logic
+  if(d.name.includes('對練')) unlockBadge('spar');
+  if(d.name.includes('品勢')) unlockBadge('poomsae');
+  if(d.name.includes('家長')) unlockBadge('parent');
+  if(d.name.includes('出國')) unlockBadge('thai');
+  if(!S.tasks[2]) completeTask(2);
+  save();
+  renderScenes();
+}
+
+/* ============================================================
+   CHECKIN
+   ============================================================ */
+function checkin(n,exp){
+  if(n===0){toast('💪 沒關係，明天訓練場挑戰一句！');return;}
+  S.checkins.push({date:todayStr(),n,exp});
+  recordWeek(d=>{d.checkins=(d.checkins||0)+1;});
+  addExp(exp,'checkin');
+  if(!S.tasks[4]) completeTask(4);
+  toast('🔥 實戰打卡成功！+'+exp+' EXP');
+  setTimeout(()=>showInfoOverlay('🔥','實戰打卡成功！','你不是只在學英文，\n你已經開始使用英文。'),500);
+  save();
+  renderCheckin();
+}
+function renderCheckin(){
+  const el=document.getElementById('checkinLog');
+  if(!S.checkins.length){el.innerHTML='<div class="empty">還沒有打卡紀錄，今天去訓練場講一句吧！</div>';return;}
+  const recent=S.checkins.slice(-10).reverse();
+  el.innerHTML=recent.map(c=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${c.date}</span><span>講了 ${c.n>=5?'5+':c.n} 句 · +${c.exp} EXP</span></div>`).join('')+
+    `<div style="margin-top:10px;text-align:center;color:var(--gold);font-weight:700">總打卡 ${S.checkins.length} 次</div>`;
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+let quiz={items:[],idx:0,score:0,answered:false};
+function resetQuizScreen(){
+  document.getElementById('quizStart').style.display='block';
+  document.getElementById('quizBody').style.display='none';
+  document.getElementById('quizResult').style.display='none';
+}
+function buildQuiz(){
+  const items=[];
+  const pool=WORDS.slice();
+  function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+  function others(correct,key,n=3){
+    const set=new Set([correct[key]]);const res=[];let guard=0;
+    while(res.length<n && guard++<50){const o=rnd(pool);if(!set.has(o[key])){set.add(o[key]);res.push(o[key]);}}
+    return res;
+  }
+  const used=new Set();
+  function pick(){let w;let g=0;do{w=rnd(pool);g++;}while(used.has(w.en)&&g<30);used.add(w.en);return w;}
+  // type1 中文選英文
+  let w=pick();let q1={q:'「'+w.zh+'」的英文是？',correct:w.en,opts:shuffle([w.en,...others(w,'en')])};items.push(q1);
+  // type2 英文選中文
+  w=pick();items.push({q:'「'+w.en+'」的中文是？',correct:w.zh,opts:shuffle([w.zh,...others(w,'zh')])});
+  // type3 諧音選單字
+  w=pick();items.push({q:'諧音「'+w.ho+'」是哪個單字？',correct:w.en,opts:shuffle([w.en,...others(w,'en')])});
+  // type4 情境選句子 (commands)
+  const c=COMMANDS[Math.floor(Math.random()*COMMANDS.length)];
+  const cother=[];const cs=new Set([c.en]);let g=0;while(cother.length<3&&g++<50){const o=COMMANDS[Math.floor(Math.random()*COMMANDS.length)];if(!cs.has(o.en)){cs.add(o.en);cother.push(o.en);}}
+  items.push({q:'情境：'+c.when+' 該說？',correct:c.en,opts:shuffle([c.en,...cother])});
+  // type5 中文選英文 again
+  w=pick();items.push({q:'「'+w.zh+'」的英文是？',correct:w.en,opts:shuffle([w.en,...others(w,'en')])});
+  return items;
+}
+function shuffle(a){return a.map(x=>({x,r:Math.random()})).sort((p,q)=>p.r-q.r).map(o=>o.x);}
+function startQuiz(){
+  quiz={items:buildQuiz(),idx:0,score:0,answered:false};
+  document.getElementById('quizStart').style.display='none';
+  document.getElementById('quizResult').style.display='none';
+  document.getElementById('quizBody').style.display='block';
+  renderQuizQ();
+}
+function renderQuizQ(){
+  const it=quiz.items[quiz.idx];
+  quiz.answered=false;
+  const pct=Math.round(quiz.idx/quiz.items.length*100);
+  document.getElementById('quizBody').innerHTML=`
+    <div class="card">
+      <div class="q-prog"><div style="width:${pct}%"></div></div>
+      <div class="muted" style="margin-bottom:6px">第 ${quiz.idx+1} / ${quiz.items.length} 題</div>
+      <div class="q-text">${it.q}</div>
+      <div id="optWrap" style="margin-top:14px">
+        ${it.opts.map(o=>`<button class="opt" onclick="answer(this,'${esc(o)}')">${o}</button>`).join('')}
+      </div>
+    </div>`;
+}
+function answer(btn,val){
+  if(quiz.answered)return;
+  quiz.answered=true;
+  const it=quiz.items[quiz.idx];
+  const correct=val===it.correct;
+  if(correct)quiz.score++;
+  document.querySelectorAll('#optWrap .opt').forEach(b=>{
+    if(b.textContent===it.correct)b.classList.add('correct');
+    else if(b===btn)b.classList.add('wrong');
+    else b.classList.add('dim');
+    b.onclick=null;
+  });
+  const wrap=document.getElementById('optWrap');
+  const note=document.createElement('div');
+  note.style.cssText='margin-top:10px;font-weight:700;color:'+(correct?'var(--green)':'var(--orange)');
+  note.textContent=correct?'✅ 答對了！':'正解：'+it.correct;
+  wrap.appendChild(note);
+  const nb=document.createElement('button');
+  nb.className='btn'; nb.style.marginTop='12px';
+  nb.textContent=quiz.idx<quiz.items.length-1?'下一題 →':'看結果 🏁';
+  nb.onclick=nextQ;
+  wrap.appendChild(nb);
+}
+function nextQ(){
+  if(quiz.idx<quiz.items.length-1){quiz.idx++;renderQuizQ();}
+  else finishQuiz();
+}
+function finishQuiz(){
+  const sc=Math.round(quiz.score/quiz.items.length*100);
+  S.lastQuiz=sc;
+  recordWeek(d=>{d.quizSum=(d.quizSum||0)+sc;d.quizN=(d.quizN||0)+1;});
+  let exp,msg;
+  if(sc===100){exp=50;msg='滿分！國際教練實力 💯';}
+  else if(sc>=80){exp=40;msg='很強！再一點就滿分。';}
+  else if(sc>=60){exp=30;msg='及格！穩穩進步中。';}
+  else{exp=10;msg='別灰心，再練一次一定更好！';}
+  addExp(exp,'quiz');
+  if(!S.tasks[3]) completeTask(3);
+  document.getElementById('quizBody').style.display='none';
+  const r=document.getElementById('quizResult');
+  r.style.display='block';
+  r.innerHTML=`<div class="card" style="text-align:center">
+    <div style="font-size:54px">${sc>=80?'🏆':sc>=60?'👍':'💪'}</div>
+    <h2 style="justify-content:center">得分 ${sc} 分</h2>
+    <div class="muted" style="margin:8px 0 4px">答對 ${quiz.score} / ${quiz.items.length} 題</div>
+    <div style="color:var(--gold);font-weight:800;font-size:15px;margin-bottom:6px">+${exp} EXP</div>
+    <div class="muted" style="margin-bottom:16px">${msg}</div>
+    <div class="btn-row">
+      <button class="btn" onclick="startQuiz()">再來一次 🔁</button>
+      <button class="btn ghost" onclick="go('home')">回首頁</button>
+    </div>
+  </div>`;
+  save();
+}
+
+/* ============================================================
+   FAVORITES
+   ============================================================ */
+function renderFav(type,btn){
+  if(btn){document.querySelectorAll('#favPills .pill').forEach(p=>p.classList.remove('active'));btn.classList.add('active');}
+  const el=document.getElementById('favList');
+  let html='';
+  const showW=type==='all'||type==='word';
+  const showC=type==='all'||type==='cmd';
+  const showD=type==='all'||type==='dialog';
+  const showP=type==='all'||type==='parent';
+  const showA=type==='all'||type==='abroad';
+  if(showW&&S.favWords.length){html+='<div class="sec-title">單字</div>';S.favWords.forEach(en=>{const w=WORDS.find(x=>x.en===en);if(w)html+=favItem(w.emoji+' '+w.en,w.zh+' · '+w.ho,()=>`removeFav('word','${esc(en)}')`);});}
+  if(showC&&S.favCmds.length){html+='<div class="sec-title">教練口令</div>';S.favCmds.forEach(en=>{const c=COMMANDS.find(x=>x.en===en);if(c)html+=favItem(c.en,c.zh+' · '+c.ho,()=>`removeFav('cmd','${esc(en)}')`);});}
+  if(showD&&S.favDialogs.length){html+='<div class="sec-title">情境對話</div>';S.favDialogs.forEach(n=>{const d=DIALOGUES.find(x=>x.name===n);if(d)html+=favItem(d.icon+' '+d.name,d.key,()=>`removeFav('dialog','${esc(n)}')`);});}
+  if(showP&&S.favParents.length){html+='<div class="sec-title">家長溝通</div>';S.favParents.forEach(en=>{const p=PARENTS.find(x=>x.en===en);if(p)html+=favItem(p.en,p.zh,()=>`removeFav('parent','${esc(en)}')`);});}
+  if(showA&&S.favAbroad.length){html+='<div class="sec-title">出國英文</div>';S.favAbroad.forEach(en=>{const a=ABROAD.find(x=>x.en===en);if(a)html+=favItem(a.en,a.zh,()=>`removeFav('abroad','${esc(en)}')`);});}
+  if(!html)html='<div class="empty">還沒有收藏。點任何單字或句子的「☆ 收藏」吧！</div>';
+  el.innerHTML=html;
+}
+function favItem(title,sub,rmFn){
+  return `<div class="task"><div class="tinfo"><div class="tt">${title}</div><div class="ts">${sub}</div></div><button class="speak" onclick="${rmFn()}">🗑️</button></div>`;
+}
+function removeFav(type,key){
+  const map={word:'favWords',cmd:'favCmds',dialog:'favDialogs',parent:'favParents',abroad:'favAbroad'};
+  const a=S[map[type]];const i=a.indexOf(key);if(i>=0)a.splice(i,1);save();
+  const active=document.querySelector('#favPills .pill.active');
+  renderFav(active?active.textContent==='全部'?'all':({'單字':'word','教練口令':'cmd','情境對話':'dialog','家長溝通':'parent','出國英文':'abroad'})[active.textContent]:'all',active);
+  refreshHome();
+}
+
+/* ============================================================
+   TKD LIBRARY
+   ============================================================ */
+function renderTkd(){
+  document.getElementById('tkdList').innerHTML=TKD.map(t=>{
+    const parts=t.ex.split('｜');
+    return `<div class="wordcard">
+      <div class="top"><div style="flex:1"><div class="en">${t.en}</div><div class="zh">${t.zh}</div></div><div class="speak" onclick="speak('${esc(t.en)}')">🔊</div></div>
+      <div class="row-line ex"><b>例句</b><span>${parts[0]}<br><span style="color:var(--sub)">${parts[1]||''}</span></span></div>
+    </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   ABROAD
+   ============================================================ */
+function renderAbroad(){
+  const cats=[...new Set(ABROAD.map(a=>a.cat))];
+  let html='';
+  cats.forEach(cat=>{
+    html+=`<div class="sec-title">${cat}</div>`;
+    ABROAD.filter(a=>a.cat===cat).forEach(a=>{
+      const favd=S.favAbroad.includes(a.en);
+      html+=`<div class="wordcard">
+        <div class="top"><div style="flex:1"><div class="en" style="font-size:16px">${a.en}</div><div class="zh">${a.zh}</div></div><div class="speak" onclick="speak('${esc(a.en)}')">🔊</div></div>
+        <div class="mini-row"><button class="btn ${favd?'gold':'ghost'} sm" onclick="toggleFavAbroad('${esc(a.en)}')">${favd?'★ 已收藏':'☆ 收藏'}</button></div>
+      </div>`;
+    });
+  });
+  document.getElementById('abroadList').innerHTML=html;
+}
+function toggleFavAbroad(en){const i=S.favAbroad.indexOf(en);if(i>=0)S.favAbroad.splice(i,1);else S.favAbroad.push(en);save();renderAbroad();refreshHome();}
+
+/* ============================================================
+   PARENT
+   ============================================================ */
+function renderParent(){
+  document.getElementById('parentList').innerHTML=PARENTS.map(p=>{
+    const favd=S.favParents.includes(p.en);
+    return `<div class="wordcard">
+      <div class="top"><div style="flex:1"><div class="en" style="font-size:16px">${p.en}</div><div class="zh">${p.zh}</div></div><div class="speak" onclick="speak('${esc(p.en)}')">🔊</div></div>
+      <div class="mini-row"><button class="btn ${favd?'gold':'ghost'} sm" onclick="toggleFavParent('${esc(p.en)}')">${favd?'★ 已收藏':'☆ 收藏'}</button></div>
+    </div>`;
+  }).join('');
+}
+function toggleFavParent(en){const i=S.favParents.indexOf(en);if(i>=0)S.favParents.splice(i,1);else S.favParents.push(en);save();renderParent();refreshHome();}
+
+/* ============================================================
+   BADGES RENDER
+   ============================================================ */
+function renderBadges(){
+  document.getElementById('badgeGrid').innerHTML=BADGES.map(b=>{
+    const u=S.badges.includes(b.id);
+    return `<div class="badge ${u?'unlocked':''}"><div class="bi">${b.i}</div><div class="bn">${b.n}</div><div class="bd">${b.d}</div></div>`;
+  }).join('');
+}
+
+/* ============================================================
+   WEEKLY
+   ============================================================ */
+function renderWeekly(){
+  const dates=weekDates();
+  let studied=0,exp=0,words=0,cmds=0,quizSum=0,quizN=0,checkins=0,badges=0;
+  dates.forEach(d=>{const w=S.week[d];if(w){if(w.studied)studied++;exp+=w.exp||0;words+=w.words||0;cmds+=w.cmds||0;quizSum+=w.quizSum||0;quizN+=w.quizN||0;checkins+=w.checkins||0;badges+=w.badges||0;}});
+  const avg=quizN?Math.round(quizSum/quizN):'-';
+  const cards=[
+    ['📅',studied,'學習天數'],['⭐',exp,'本週 EXP'],['📚',words,'學會單字'],['📣',cmds,'學會口令'],
+    ['📝',avg+(avg==='-'?'':'分'),'測驗平均'],['🔥',checkins,'實戰打卡'],['🏅',badges,'解鎖徽章'],['💪',S.streak,'目前連續']
+  ];
+  document.getElementById('weeklyGrid').innerHTML=cards.map(c=>`<div class="wk"><div style="font-size:20px">${c[0]}</div><div class="wn">${c[1]}</div><div class="wl">${c[2]}</div></div>`).join('');
+}
+
+/* ============================================================
+   UTIL
+   ============================================================ */
+function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+function speak(t){
+  try{const u=new SpeechSynthesisUtterance(t.replace(/&quot;/g,'"').replace(/\\'/g,"'"));u.lang='en-US';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
+}
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function showOverlay(){document.getElementById('overlay').classList.add('show');confetti();}
+function showInfoOverlay(em,title,desc){document.getElementById('luEm').textContent=em;document.getElementById('luTitle').textContent=title;document.getElementById('luDesc').textContent=desc;showOverlay();}
+function closeOverlay(){document.getElementById('overlay').classList.remove('show');}
+function confetti(){
+  const colors=['#fbbf24','#3b82f6','#22d3ee','#34d399','#f472b6'];
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'%';c.style.background=colors[i%5];
+    c.style.transform='rotate('+Math.random()*360+'deg)';
+    document.body.appendChild(c);
+    const dur=1200+Math.random()*1200;
+    c.animate([{transform:'translateY(0) rotate(0)',opacity:1},{transform:'translateY('+(window.innerHeight+40)+'px) rotate(720deg)',opacity:.2}],{duration:dur,easing:'cubic-bezier(.2,.6,.4,1)'});
+    setTimeout(()=>c.remove(),dur);
+  }
+}
+function resetConfirm(){
+  if(confirm('確定要重設所有學習資料嗎？此動作無法復原。')){
+    localStorage.removeItem(KEY);S=defaultState();save();go('home');toast('已重設，重新開始你的教練之路！');
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+ensureDaily();
+refreshHome();
+</script>
+</body>
+</html>
