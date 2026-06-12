@@ -452,6 +452,11 @@ const WORDS = [
   {cat:'比賽用語',emoji:'⚔️',en:'Attack',zh:'進攻',ho:'阿踏克',pron:'əˈtæk',ex:'Attack first.',exZh:'先攻。',sit:'鼓勵主動。'},
   {cat:'比賽用語',emoji:'📏',en:'Distance',zh:'距離',ho:'滴斯騰斯',pron:'ˈdɪstəns',ex:'Control the distance.',exZh:'控制距離。',sit:'對練指導。'},
   {cat:'比賽用語',emoji:'⏱️',en:'Timing',zh:'時機',ho:'台明',pron:'ˈtaɪmɪŋ',ex:'Wait for the timing.',exZh:'等時機。',sit:'反擊教學。'},
+  {cat:'比賽用語',emoji:'🧑‍⚖️',en:'Referee',zh:'裁判',ho:'瑞佛利',pron:'ˌrɛfəˈriː',ex:'May I speak to the referee?',exZh:'我可以跟裁判說明嗎？',sit:'需要禮貌詢問裁判時。'},
+  {cat:'比賽用語',emoji:'🚩',en:'Appeal',zh:'申訴',ho:'阿皮爾',pron:'əˈpiːl',ex:'We would like to file an appeal.',exZh:'我們想提出申訴。',sit:'正式提出申訴。'},
+  {cat:'比賽用語',emoji:'🎥',en:'Video review',zh:'錄影審查',ho:'V迪歐 瑞ビュー',pron:'ˈvɪdioʊ rɪˈvjuː',ex:'Can we request a video review?',exZh:'我們可以要求錄影審查嗎？',sit:'請求重看畫面。'},
+  {cat:'比賽用語',emoji:'✅',en:'Valid point',zh:'有效得分',ho:'瓦立德 point',pron:'ˈvælɪd pɔɪnt',ex:'That should be a valid point.',exZh:'那應該是有效得分。',sit:'認為應該給分。'},
+  {cat:'比賽用語',emoji:'❌',en:'Penalty',zh:'犯規/判罰',ho:'潘納提',pron:'ˈpɛnəlti',ex:'Please explain the penalty.',exZh:'請說明這個判罰。',sit:'詢問犯規判定原因。'},
   // 鼓勵語
   {cat:'鼓勵語',emoji:'👍',en:'Good job',zh:'做得好',ho:'估賈伯',pron:'gʊd dʒɑb',ex:'Good job, keep going.',exZh:'做得好，繼續。',sit:'稱讚學生。'},
   {cat:'鼓勵語',emoji:'💖',en:'Believe',zh:'相信',ho:'比立夫',pron:'bɪˈliːv',ex:'Believe in yourself.',exZh:'相信自己。',sit:'賽前打氣。'},
@@ -465,6 +470,12 @@ const WORDS = [
   {cat:'出國移地訓練',emoji:'✈️',en:'Training camp',zh:'移地訓練',ho:'吹寧 坎普',pron:'ˈtreɪnɪŋ kæmp',ex:'We are here for a training camp.',exZh:'我們來這裡移地訓練。',sit:'說明來意。'},
   {cat:'出國移地訓練',emoji:'🤝',en:'Nice to meet you',zh:'很高興認識你',ho:'耐斯 兔 密特 優',pron:'naɪs tə miːt juː',ex:'Nice to meet you.',exZh:'很高興認識你。',sit:'與外國教練見面。'},
   {cat:'出國移地訓練',emoji:'🕐',en:'Schedule',zh:'行程',ho:'斯給就',pron:'ˈskɛdʒuːl',ex:'What is the schedule today?',exZh:'今天的行程是什麼？',sit:'詢問安排。'},
+  // 國際交流
+  {cat:'國際交流',emoji:'🌍',en:'Exchange',zh:'交流',ho:'伊克斯チェン吉',pron:'ɪksˈtʃeɪndʒ',ex:'This is a great exchange opportunity.',exZh:'這是很棒的交流機會。',sit:'國際交流開場。'},
+  {cat:'國際交流',emoji:'🤝',en:'Cooperate',zh:'合作',ho:'摳阿波瑞特',pron:'koʊˈɑpəreɪt',ex:'We hope to cooperate again.',exZh:'希望未來能再合作。',sit:'活動結束後致意。'},
+  {cat:'國際交流',emoji:'🎁',en:'Souvenir',zh:'紀念品',ho:'蘇venir',pron:'ˌsuːvəˈnɪr',ex:'This is a small souvenir from Taiwan.',exZh:'這是來自台灣的小紀念品。',sit:'贈送禮物。'},
+  {cat:'國際交流',emoji:'📇',en:'Contact',zh:'聯絡方式',ho:'康泰克特',pron:'ˈkɑntækt',ex:'Can we exchange contact information?',exZh:'我們可以交換聯絡方式嗎？',sit:'建立後續聯繫。'},
+  {cat:'國際交流',emoji:'📸',en:'Photo',zh:'照片',ho:'佛透',pron:'ˈfoʊtoʊ',ex:'Can we take a group photo?',exZh:'我們可以拍團體照嗎？',sit:'合照留念。'},
 ];
 
 const COMMANDS = [
@@ -484,6 +495,10 @@ const COMMANDS = [
   {zh:'盯住對手',en:'Watch your opponent.',ho:'襪取 優 阿剖能',when:'比賽觀察提醒。'},
   {zh:'先攻',en:'Attack first.',ho:'阿踏克 佛斯特',when:'鼓勵主動進攻。'},
   {zh:'守好',en:'Defend well.',ho:'迪芬德 威爾',when:'提醒防守。'},
+  {zh:'請求錄影審查',en:'Can we request a video review?',ho:'肯 wi 瑞奎斯特 V迪歐 瑞ビュー',when:'對得分或判罰有疑問時。'},
+  {zh:'我們想提出申訴',en:'We would like to file an appeal.',ho:'wi wood like to file an 阿皮爾',when:'正式向大會提出申訴。'},
+  {zh:'請說明這個判罰',en:'Please explain the penalty.',ho:'普利斯 依克斯plain the 潘納提',when:'需要裁判說明判罰。'},
+  {zh:'我尊重判決',en:'I respect the decision.',ho:'I 瑞斯派克特 the 滴西仁',when:'申訴後保持禮貌。'},
   {zh:'踢高一點',en:'Kick higher.',ho:'踢克 海爾',when:'踢太低時。'},
   {zh:'呼吸',en:'Breathe.',ho:'布利惹',when:'學生太緊繃。'},
   {zh:'放鬆肩膀',en:'Relax your shoulders.',ho:'瑞拉克斯 優 秀德斯',when:'動作僵硬時。'},
@@ -562,6 +577,17 @@ const DIALOGUES = [
     {s:'other',en:'How many students do you have?',zh:'你有多少學生？'},
     {s:'coach',en:'We train kids and competition athletes.',zh:'我們訓練小朋友和比賽選手。'},
   ],key:'I run Hsiungchi Taekwondo Dojo.｜我經營雄麒道館。'},
+  {name:'國際交流邀請',icon:'🌍',other:'Foreign Coach',lines:[
+    {s:'coach',en:'It was great training with your team today.',zh:'今天能和你們隊伍一起訓練很棒。'},
+    {s:'other',en:'Your athletes worked very hard.',zh:'你們的選手非常努力。'},
+    {s:'coach',en:'Can we exchange contact information for future exchanges?',zh:'我們可以交換聯絡方式，方便未來交流嗎？'},
+  ],key:'Can we exchange contact information?｜可以交換聯絡方式嗎？'},
+  {name:'裁判申訴',icon:'🚩',other:'Referee',lines:[
+    {s:'coach',en:'Excuse me, may I ask about that decision?',zh:'不好意思，我可以詢問剛剛的判決嗎？'},
+    {s:'other',en:'Please speak clearly and calmly.',zh:'請清楚且冷靜地說明。'},
+    {s:'coach',en:'We would like to request a video review for that point.',zh:'我們想針對那一分請求錄影審查。'},
+    {s:'coach',en:'Thank you. I respect the final decision.',zh:'謝謝，我尊重最後判決。'},
+  ],key:'We would like to request a video review.｜我們想請求錄影審查。'},
 ];
 
 const TKD = [
@@ -599,6 +625,17 @@ const ABROAD = [
   {cat:'詢問集合',en:'What time should we be here?',zh:'我們該幾點到這裡？'},
   {cat:'交流',en:'Can we train together?',zh:'我們可以一起訓練嗎？'},
   {cat:'交流',en:'Your athletes are very strong.',zh:'你的選手很強。'},
+  {cat:'交流',en:'It was great training with your team today.',zh:'今天能和你們隊伍一起訓練很棒。'},
+  {cat:'交流',en:'Can we exchange contact information?',zh:'我們可以交換聯絡方式嗎？'},
+  {cat:'交流',en:'Let\'s keep in touch after the tournament.',zh:'比賽後我們保持聯絡。'},
+  {cat:'交流',en:'This is a small souvenir from Taiwan.',zh:'這是來自台灣的小紀念品。'},
+  {cat:'交流',en:'Can we take a group photo?',zh:'我們可以拍團體照嗎？'},
+  {cat:'裁判申訴',en:'Excuse me, may I ask about that decision?',zh:'不好意思，我可以詢問剛剛的判決嗎？'},
+  {cat:'裁判申訴',en:'We would like to file an appeal.',zh:'我們想提出申訴。'},
+  {cat:'裁判申訴',en:'Can we request a video review?',zh:'我們可以要求錄影審查嗎？'},
+  {cat:'裁判申訴',en:'Please explain the penalty.',zh:'請說明這個判罰。'},
+  {cat:'裁判申訴',en:'That should be a valid point.',zh:'那應該是有效得分。'},
+  {cat:'裁判申訴',en:'I respect the final decision.',zh:'我尊重最後判決。'},
   {cat:'打招呼',en:'Hello! Good to see you.',zh:'你好！很高興見到你。'},
   {cat:'打招呼',en:'Let\'s do our best today.',zh:'今天我們一起加油。'},
   {cat:'生活',en:'Where is the restroom?',zh:'廁所在哪裡？'},
@@ -641,6 +678,7 @@ const BADGES = [
   {id:'poomsae',i:'🧎',n:'Poomsae Coach',d:'完成品勢英文關卡'},
   {id:'parent',i:'👪',n:'Parent Talker',d:'完成家長溝通英文'},
   {id:'thai',i:'🇹🇭',n:'Thailand Ready',d:'完成出國移地訓練英文'},
+  {id:'appeal',i:'🚩',n:'Appeal Ready',d:'學會裁判申訴基本用語'},
   {id:'intl',i:'🌍',n:'International Coach',d:'總 EXP 達到 3000'},
 ];
 
@@ -890,7 +928,7 @@ function seededPick(arr,seed,n){
    WORDS
    ============================================================ */
 let wordFilter='今日';
-const WORD_CATS=['今日','身體部位','跆拳道動作','訓練指令','比賽用語','鼓勵語','家長溝通','出國移地訓練'];
+const WORD_CATS=['今日','身體部位','跆拳道動作','訓練指令','比賽用語','鼓勵語','家長溝通','出國移地訓練','國際交流'];
 function renderWords(){
   ensureDaily();
   const pl=document.getElementById('wordPills');
